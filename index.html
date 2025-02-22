@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolarScope - Solar Installation Estimator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <div class="container">
+  
+    <header>
+      <h1>Solar Installation Estimator</h1>
+      <img src="Assets/solarscope-logo-light.jpeg" alt="SolarScope Logo" class="logo" id="theme-logo" data-light-src="Assets/solarscope-logo-light.jpeg" data-dark-src="Assets/solarscope-logo-dark.jpeg">
+      <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+    </header>
+    ```
+
+    <h2>Appliance Power Rating Assessment</h2>
+    <table id="appliance-table">
+      <thead>
+        <tr>
+          <th>Appliance / Equipment</th>
+          <th>Watts</th>
+          <th>Quantity</th>
+          <th>Usage (Hours/Day)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Television Set</td>
+          <td><input type="number" value="50" class="watts"></td>
+          <td><input type="number" value="1" class="quantity"></td>
+          <td><input type="number" value="4" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Gotv Decoder</td>
+          <td><input type="number" value="15" class="watts"></td>
+          <td><input type="number" value="1" class="quantity"></td>
+          <td><input type="number" value="4" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Washing Machine</td>
+          <td><input type="number" value="120" class="watts"></td>
+          <td><input type="number" value="1" class="quantity"></td>
+          <td><input type="number" value="1" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Refrigerator</td>
+          <td><input type="number" value="70" class="watts"></td>
+          <td><input type="number" value="1" class="quantity"></td>
+          <td><input type="number" value="10" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Ceiling Fans</td>
+          <td><input type="number" value="70" class="watts"></td>
+          <td><input type="number" value="2" class="quantity"></td>
+          <td><input type="number" value="10" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>LED Ceiling Light Bulbs</td>
+          <td><input type="number" value="8" class="watts"></td>
+          <td><input type="number" value="14" class="quantity"></td>
+          <td><input type="number" value="10" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Power Socket (Charging)</td>
+          <td><input type="number" value="15" class="watts"></td>
+          <td><input type="number" value="2" class="quantity"></td>
+          <td><input type="number" value="6" class="usage"></td>
+          <td><button class="remove-row">Remove</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5"><button id="add-row">Add Item</button></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <button id="calculate">Calculate</button>
+
+    <h2>Results</h2>
+
+    <div class="result-section">
+      <h3>Inverter</h3>
+      <p>Inverter Required: <span id="inverter-size"></span> Watts</p>
+      <label for="inverter-type">Inverter Type:</label>
+      <select id="inverter-type">
+        <option value="pure-sine">Pure Sine Wave - Ideal for sensitive electronics like laptops, air conditioners, and refrigerators.</option>
+        <option value="modified-sine">Modified Sine Wave - Cost-effective, suitable for TVs, lights, and power tools.</option>
+        <option value="square">Square Wave - Basic DC to AC conversion, rarely used.</option>
+        <option value="grid-tie">Grid-Tie Inverter - Converts DC to AC while synchronizing with the grid.</option>
+        <option value="off-grid">Off-Grid Inverter - Operates independently without grid connection.</option>
+        <option value="hybrid">Hybrid Inverter - Blends grid, solar, and battery power with energy storage.</option>
+    
+          </select>
+          <p class="tooltip">
+            <i class="fas fa-info-circle"></i>
+            <span>
+              <b>Pure Sine Wave:</b> Also known as a "true" sine wave, it powers sensitive electronics such as laptops, air conditioners, and refrigerators.  
+
+              <b>Modified Sine Wave:</b> Provides a stair-stepped approximation of a sine wave, ideal for devices like TVs, lights, and power tools.  
+
+              <b>Square Wave:</b> The simplest form of inverter output, converting DC to a basic AC signal, though it’s rarely used.  
+
+              <b>Grid-Tied:</b> The most common type, supplying AC power from a DC source while remaining synchronized with the grid.  
+
+              <b>Off-Grid:</b> Designed for standalone operation, it does not synchronize with the grid.  
+
+              <b>Hybrid:</b> Combines on-grid and off-grid capabilities by integrating solar, grid, and battery power, allowing energy storage and surplus export.  
+            </span>
+          </p>
+
+      <p class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span>Inverter size is calculated by summing the total maximum load of all appliances and adding a 50% safety
+          margin. This ensures the inverter can handle peak loads and provides a buffer for future expansion.</span>
+      </p>
+    </div>
+
+    <div class="result-section">
+      <h3>Battery</h3>
+      <label for="battery-voltage">Battery Bank Voltage:</label>
+      <select id="battery-voltage">
+        <option value="12">12V</option>
+        <option value="24" selected>24V</option>
+        <option value="48">48V</option>
+      </select>
+      <p class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span><b>Battery Bank Voltage:</b> affects the efficiency and cost of your system. Higher voltages reduce current,
+          minimizing losses and allowing for thinner cables, but require more batteries in series.</span>
+      </p>
+      <p>Battery Bank: <span id="battery-bank"></span></p>
+      <p>Number of Batteries: <span id="battery-quantity"></span></p>
+      <p class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span>Battery bank size is determined by the total daily energy consumption of the appliances, the battery
+          voltage, and the depth of discharge. A higher battery capacity ensures longer backup time.</span>
+      </p>
+      <label for="battery-type">Battery Type:</label>
+      <select id="battery-type">
+        <option value="200">200Ah</option>
+        <option value="220">220Ah</option>
+        <option value="240" selected>240Ah</option>
+        <option value="300">300Ah</option>
+      </select>
+    </div>
+
+    <div class="result-section">
+      <h3>Solar Panel</h3>
+      <p>Solar Panels Required: <span id="solar-panels"></span></p>
+      <p class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span>The number of solar panels is calculated based on the battery bank size, the panel wattage, and the daily
+          sunlight hours. More panels ensure faster battery charging.</span>
+      </p>
+      <label for="panel-wattage">Panel Wattage:</label>
+      <select id="panel-wattage">
+        <option value="300">300W</option>
+        <option value="360" selected>360W</option>
+        <option value="400">400W</option>
+        <option value="450">450W</option>
+        <option value="500">500W</option>
+        <option value="550">550W</option>
+        <option value="600">600W</option>
+      </select>
+    </div>
+
+    <div class="result-section">
+      <h3>Charge Controller</h3>
+      <p>Charge Controller: <span id="charge-controller"></span> Amps</p>
+      <label for="charge-controller-type">Charge Controller Type:</label>
+      <select id="charge-controller-type">
+        <option value="pwm">PWM</option>
+        <option value="mppt">MPPT</option>
+      </select>
+      <p class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span><b>PWM:</b> Less expensive, good for smaller systems. <b>MPPT:</b> More efficient, maximizes power from
+          solar panels.</span>
+      </p>
+      <p class="tooltip">
+        <i class="fas fa-info-circle"></i>
+        <span>Charge controller size is determined by the voltage of the solar array, the voltage of the battery bank, and
+          the amperage. It regulates the voltage and current from the solar panels to the batteries, preventing
+          overcharging.</span>
+      </p>
+    </div>
+
+    <h2>Currency</h2>
+    <select id="currency">
+      <option value="USD">USD - United States Dollar</option>
+      <option value="NGN">NGN - Nigerian Naira</option>
+      <option value="EUR">EUR - European Union Euro</option>
+      <option value="GBP">GBP - British Pound Sterling</option>
+      <option value="JPY">JPY - Japanese Yen</option>
+      <option value="AUD">AUD - Australian Dollar</option>
+      <option value="CAD">CAD - Canadian Dollar</option>
+      <option value="CHF">CHF - Swiss Franc</option>
+      <option value="CNY">CNY - Chinese Yuan Renminbi</option>
+      <option value="INR">INR - Indian Rupee</option>
+      <option value="BRL">BRL - Brazilian Real</option>
+      <option value="RUB">RUB - Russian Ruble</option>
+      <option value="ZAR">ZAR - South African Rand</option>
+      <option value="MXN">MXN - Mexican Peso</option>
+      <option value="SGD">SGD - Singapore Dollar</option>
+      <option value="NZD">NZD - New Zealand Dollar</option>
+      <option value="SEK">SEK - Swedish Krona</option>
+      <option value="NOK">NOK - Norwegian Krone</option>
+      <option value="DKK">DKK - Danish Krone</option>
+      <option value="PLN">PLN - Polish Złoty</option>
+      <option value="TRY">TRY - Turkish Lira</option>
+      <option value="SAR">SAR - Saudi Riyal</option>
+      <option value="AED">AED - United Arab Emirates Dirham</option>
+      <option value="KRW">KRW - South Korean Won</option>
+      <option value="HKD">HKD - Hong Kong Dollar</option>
+      <option value="AFN">AFN - Afghan Afghani</option>
+      <option value="ALL">ALL - Albanian Lek</option>
+      <option value="AMD">AMD - Armenian Dram</option>
+      <option value="ANG">ANG - Netherlands Antillean Guilder</option>
+      <option value="AOA">AOA - Angolan Kwanza</option>
+      <option value="ARS">ARS - Argentine Peso</option>
+      <option value="AWG">AWG - Aruban Florin</option>
+      <option value="AZN">AZN - Azerbaijani Manat</option>
+      <option value="BAM">BAM - Bosnia-Herzegovina Convertible Mark</option>
+      <option value="BBD">BBD - Barbadian Dollar</option>
+      <option value="BDT">BDT - Bangladeshi Taka</option>
+      <option value="BGN">BGN - Bulgarian Lev</option>
+      <option value="BHD">BHD - Bahraini Dinar</option>
+      <option value="BIF">BIF - Burundian Franc</option>
+      <option value="BMD">BMD - Bermudan Dollar</option>
+      <option value="BND">BND - Brunei Dollar</option>
+      <option value="BOB">BOB - Bolivian Boliviano</option>
+      <option value="BSD">BSD - Bahamian Dollar</option>
+      <option value="BTN">BTN - Bhutanese Ngultrum</option>
+      <option value="BWP">BWP - Botswanan Pula</option>
+      <option value="BYN">BYN - Belarusian Ruble</option>
+      <option value="BZD">BZD - Belize Dollar</option>
+      <option value="CDF">CDF - Congolese Franc</option>
+      <option value="CLP">CLP - Chilean Peso</option>
+      <option value="COP">COP - Colombian Peso</option>
+      <option value="CRC">CRC - Costa Rican Colón</option>
+      <option value="CUP">CUP - Cuban Peso</option>
+      <option value="CVE">CVE - Cape Verdean Escudo</option>
+      <option value="CZK">CZK - Czech Republic Koruna</option>
+      <option value="DJF">DJF - Djiboutian Franc</option>
+      <option value="DOP">DOP - Dominican Peso</option>
+      <option value="DZD">DZD - Algerian Dinar</option>
+      <option value="EGP">EGP - Egyptian Pound</option>
+      <option value="ERN">ERN - Eritrean Nakfa</option>
+      <option value="ETB">ETB - Ethiopian Birr</option>
+      <option value="FJD">FJD - Fijian Dollar</option>
+      <option value="FKP">FKP - Falkland Islands Pound</option>
+      <option value="GEL">GEL - Georgian Lari</option>
+      <option value="GHS">GHS - Ghanaian Cedi</option>
+      <option value="GIP">GIP - Gibraltar Pound</option>
+      <option value="GMD">GMD - Gambian Dalasi</option>
+      <option value="GNF">GNF - Guinean Franc</option>
+      <option value="GTQ">GTQ - Guatemalan Quetzal</option>
+      <option value="GYD">GYD - Guyanaese Dollar</option>
+      <option value="HNL">HNL - Honduran Lempira</option>
+      <option value="HRK">HRK - Croatian Kuna</option>
+      <option value="HTG">HTG - Haitian Gourde</option>
+      <option value="HUF">HUF - Hungarian Forint</option>
+      <option value="IDR">IDR - Indonesian Rupiah</option>
+      <option value="ILS">ILS - Israeli New Shekel</option>
+      <option value="IQD">IQD - Iraqi Dinar</option>
+      <option value="IRR">IRR - Iranian Rial</option>
+      <option value="ISK">ISK - Icelandic Króna</option>
+      <option value="JMD">JMD - Jamaican Dollar</option>
+      <option value="JOD">JOD - Jordanian Dinar</option>
+      <option value="KES">KES - Kenyan Shilling</option>
+      <option value="KGS">KGS - Kyrgystani Som</option>
+      <option value="KHR">KHR - Cambodian Riel</option>
+      <option value="KMF">KMF - Comorian Franc</option>
+      <option value="KPW">KPW - North Korean Won</option>
+      <option value="KWD">KWD - Kuwaiti Dinar</option>
+      <option value="KYD">KYD - Cayman Islands Dollar</option>
+      <option value="KZT">KZT - Kazakhstani Tenge</option>
+      <option value="LAK">LAK - Laotian Kip</option>
+      <option value="LBP">LBP - Lebanese Pound</option>
+      <option value="LKR">LKR - Sri Lankan Rupee</option>
+      <option value="LRD">LRD - Liberian Dollar</option>
+      <option value="LSL">LSL - Lesotho Loti</option>
+      <option value="LYD">LYD - Libyan Dinar</option>
+      <option value="MAD">MAD - Moroccan Dirham</option>
+      <option value="MDL">MDL - Moldovan Leu</option>
+      <option value="MGA">MGA - Malagasy Ariary</option>
+      <option value="MKD">MKD - Macedonian Denar</option>
+      <option value="MMK">MMK - Myanmar Kyat</option>
+      <option value="MNT">MNT - Mongolian Tugrik</option>
+      <option value="MOP">MOP - Macanese Pataca</option>
+      <option value="MRU">MRU - Mauritanian Ouguiya</option>
+      <option value="MUR">MUR - Mauritian Rupee</option>
+      <option value="MVR">MVR - Maldivian Rufiyaa</option>
+      <option value="MWK">MWK - Malawian Kwacha</option>
+      <option value="MYR">MYR - Malaysian Ringgit</option>
+      <option value="MZN">MZN - Mozambican Metical</option>
+      <option value="NAD">NAD - Namibian Dollar</option>
+      <option value="NIO">NIO - Nicaraguan Córdoba</option>
+      <option value="NPR">NPR - Nepalese Rupee</option>
+      <option value="OMR">OMR - Omani Rial</option>
+      <option value="PAB">PAB - Panamanian Balboa</option>
+      <option value="PEN">PEN - Peruvian Nuevo Sol</option>
+      <option value="PGK">PGK - Papua New Guinean Kina</option>
+      <option value="PHP">PHP - Philippine Peso</option>
+      <option value="PKR">PKR - Pakistani Rupee</option>
+      <option value="PYG">PYG - Paraguayan Guarani</option>
+      <option value="QAR">QAR - Qatari Rial</option>
+      <option value="RON">RON - Romanian Leu</option>
+      <option value="RSD">RSD - Serbian Dinar</option>
+      <option value="RWF">RWF - Rwandan Franc</option>
+      <option value="SBD">SBD - Solomon Islands Dollar</option>
+      <option value="SCR">SCR - Seychellois Rupee</option>
+      <option value="SDG">SDG - Sudanese Pound</option>
+      <option value="SHP">SHP - Saint Helena Pound</option>
+      <option value="SLL">SLL - Sierra Leonean Leone</option>
+      <option value="SOS">SOS - Somali Shilling</option>
+      <option value="SRD">SRD - Surinamese Dollar</option>
+      <option value="SSP">SSP - South Sudanese Pound</option>
+      <option value="STN">STN - São Tomé and Príncipe Dobra</option>
+      <option value="SVC">SVC - Salvadoran Colón</option>
+      <option value="SYP">SYP - Syrian Pound</option>
+      <option value="SZL">SZL - Swazi Lilangeni</option>
+      <option value="THB">THB - Thai Baht</option>
+      <option value="TJS">TJS - Tajikistani Somoni</option>
+      <option value="TMT">TMT - Turkmenistani Manat</option>
+      <option value="TND">TND - Tunisian Dinar</option>
+      <option value="TOP">TOP - Tongan Paʻanga</option>
+      <option value="TTD">TTD - Trinidad and Tobago Dollar</option>
+      <option value="TWD">TWD - New Taiwan Dollar</option>
+      <option value="TZS">TZS - Tanzanian Shilling</option>
+      <option value="UAH">UAH - Ukrainian Hryvnia</option>
+      <option value="UGX">UGX - Ugandan Shilling</option>
+      <option value="UYU">UYU - Uruguayan Peso</option>
+      <option value="UZS">UZS - Uzbekistan Som</option>
+      <option value="VES">VES - Venezuelan Bolívar</option>
+      <option value="VND">VND - Vietnamese Dong</option>
+      <option value="VUV">VUV - Vanuatu Vatu</option>
+      <option value="WST">WST - Samoan Tala</option>
+      <option value="XAF">XAF - Central African CFA Franc</option>
+      <option value="XCD">XCD - East Caribbean Dollar</option>
+      <option value="XOF">XOF - West African CFA Franc</option>
+      <option value="XPF">XPF - CFP Franc</option>
+      <option value="YER">YER - Yemeni Rial</option>
+      <option value="ZMW">ZMW - Zambian Kwacha</option>
+      <option value="ZWL">ZWL - Zimbabwean Dollar</option>
+    </select>
+
+    <h2>Quotation</h2>
+    <table id="quotation-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Rate (Unit Price)</th>
+          <th>Amount</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Inverter</td>
+          <td><span id="inverter-qty"></span></td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="inverter"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="inverter" placeholder="Manufacturer/Brand"></td>
+        </tr>
+        <tr>
+          <td>Battery</td>
+          <td><span id="battery-qty-quotation"></span></td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="battery"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="battery" placeholder="Manufacturer/Brand"></td>
+        </tr>
+        <tr>
+          <td>Solar Panel</td>
+          <td><span id="solar-panel-qty-quotation"></span></td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="solar-panel"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="solar-panel" placeholder="Manufacturer/Brand"></td>
+        </tr>
+        <tr>
+          <td>Charge Controller</td>
+          <td>1</td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="charge-controller"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="charge-controller" placeholder="Manufacturer/Brand"></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <h2>Installation Materials</h2>
+    <table id="installation-materials-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Rate (Unit Price)</th>
+          <th>Amount</th>
+          <th>Comment</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10mm Coleman Cable (Coil - Black & Red)</td>
+          <td><input type="number" value="1" class="material-quantity" data-item="10mm-cable-black-red"></td>
+          <td>Coil</td>
+          <td><input type="number" class="rate" data-item="10mm-cable-black-red"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="10mm-cable-black-red" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>6mm Coleman Cable (Coil - Black & Red)</td>
+          <td><input type="number" value="1" class="material-quantity" data-item="6mm-cable-black-red"></td>
+          <td>Coil</td>
+          <td><input type="number" class="rate" data-item="6mm-cable-black-red"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="6mm-cable-black-red" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Coil of 2.5mm Comester cable</td>
+          <td><input type="number" value="2" class="material-quantity" data-item="2.5mm-cable"></td>
+          <td>Coil</td>
+          <td><input type="number" class="rate" data-item="2.5mm-cable"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="2.5mm-cable" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Cable Trucking</td>
+          <td><input type="number" value="4" class="material-quantity" data-item="cable-trucking"></td>
+          <td>Length</td>
+          <td><input type="number" class="rate" data-item="cable-trucking"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="cable-trucking" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Battery Stand</td>
+          <td><input type="number" value="1" class="material-quantity" data-item="battery-stand"></td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="battery-stand"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="battery-stand" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Battery Cable with cable locks (Yards)</td>
+          <td><input type="number" value="14" class="material-quantity" data-item="battery-cable"></td>
+          <td>Yards</td>
+          <td><input type="number" class="rate" data-item="battery-cable"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="battery-cable" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Solar Rack</td>
+          <td><input type="number" value="12" class="material-quantity" data-item="solar-rack"></td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="solar-rack"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="solar-rack" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Bolt, Nuts, Washers, Nails, Flash Bands, Tapes, Cable Locks etc.</td>
+          <td><input type="number" value="1" class="material-quantity" data-item="bolts-nuts-washers"></td>
+          <td>Set</td>
+          <td><input type="number" class="rate" data-item="bolts-nuts-washers"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="bolts-nuts-washers" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>100A Double Pole DC Circuit Breaker and Box</td>
+          <td><input type="number" value="2" class="material-quantity" data-item="100a-circuit-breaker"></td>
+          <td>No.</td>
+          <td><input type="number" class="rate" data-item="100a-circuit-breaker"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="100a-circuit-breaker" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Ladder / Scaffolding (Days)</td>
+          <td><input type="number" value="2" class="material-quantity" data-item="ladder-scaffolding"></td>
+          <td>Days</td>
+          <td><input type="number" class="rate" data-item="ladder-scaffolding"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="ladder-scaffolding" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Transportation of Materials to Site</td>
+          <td><input type="number" value="1" class="material-quantity" data-item="transportation"></td>
+          <td>Trip</td>
+          <td><input type="number" class="rate" data-item="transportation"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="transportation" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+        <tr>
+          <td>Installation Labour (Solar and Electrical)</td>
+          <td><input type="number" value="1" class="material-quantity" data-item="installation-labour"></td>
+          <td></td>
+          <td><input type="number" class="rate" data-item="installation-labour"></td>
+          <td class="amount"></td>
+          <td><input type="text" class="comment" data-item="installation-labour" placeholder="Details"></td>
+          <td><button class="remove-material-row">Remove</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7"><button id="add-material-row">Add Material</button></td>
+        </tr>
+        <tr>
+          <td colspan="5"></td>
+          <td><strong>Total: <span id="materials-total"></span></td></strong>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <h2>Installation Labour</h2>
+    <tr>
+      <td>Installation Labour (Solar and Electrical)</td>
+      <td>1</td>
+      <td></td>
+      <td><input type="number" class="rate" data-item="labor"></td>
+      <td class="amount"></td>
+      <td><input type="text" class="comment" data-item="labor" placeholder="Installer details"></td>
+    </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"></td>
+    <strong><td>Total: <span id="quotation-total"></span></td></strong>
+        <td></td>
+      </tr>
+    </tfoot>
+    </table>
+    
+    <div id="calculation-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Calculation Principles</h2>
+        <p><b>Inverter Size:</b> Total appliance load + 50% safety margin</p>
+        <p><b>Battery Bank:</b> Based on total daily energy consumption</p>
+        <p><b>Solar Panels:</b> Based on battery bank size and panel wattage</p>
+        <p><b>Charge Controller:</b> Based on solar array voltage, battery bank voltage, and amperage</p>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>Disclaimer:</strong> 
+        <p>This Solar Estimation tool provides estimates for informational purposes only. Results
+            should not be considered professional advice.</p>
+        <p>Oluwaseun Osineye is not liable for any decisions made based on these estimates. Consult with qualified professionals for accurate assessments.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
+
